@@ -1,0 +1,19 @@
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/integration"
+	xmlns:ip="http://www.springframework.org/schema/integration/ip"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd http://www.springframework.org/schema/integration/ip http://www.springframework.org/schema/integration/ip/spring-integration-ip.xsd">
+	
+	<ip:tcp-inbound-gateway id="gatewayCrLf"
+		connection-factory="crLfServer" request-channel="serverBytes2StringChannel"
+		error-channel="errorChannel"  reply-channel="fromSA"/>
+	<channel id="toSA" />
+	<channel id="fromSA" />
+	<service-activator input-channel="toSA" output-channel="fromSA" ref="messageHandler"
+		method="handleMessage" />
+<!-- 	<beans:bean id="messageHandler" -->
+<!-- 		class="za.co.chris.wug.telnet.MessageHandler" /> -->
+	<transformer id="serverBytes2String" input-channel="serverBytes2StringChannel"
+		output-channel="toSA" expression="new String(payload)" />
+	<transformer id="errorHandler" input-channel="errorChannel"
+		expression="payload.failedMessage.payload + ':' + payload.cause.message" />
+</beans:beans>

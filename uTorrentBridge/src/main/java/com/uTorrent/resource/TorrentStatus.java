@@ -1,0 +1,15 @@
+package com.uTorrent.resource;
+
+public enum TorrentStatus {
+	PAUSED,
+	SEEDING,
+	DOWNLOADING,
+	FORCEDSEEDING,
+	FORCEDDOWNLOADING,
+	CHECKING,
+	ERROR,
+	QUEUED,
+	FINISHED,
+	STOPPED,
+	UNKONWN;
+}

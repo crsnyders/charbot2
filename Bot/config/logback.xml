@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<jmxConfigurator />
+
+	<appender class="ch.qos.logback.core.rolling.RollingFileAppender"
+		name="MainLog">
+		<append>true</append>
+		<file>${logpath}/log/chatbot.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>info</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logpath}/log/archive/%d{yyyy-MM-dd}/chatbot.%d.log.zip
+			</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-30(%d{HH:mm:ss.SSS} [%thread]) %-5level %-20logger{0} -
+				%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="SERVER"
+		class="ch.qos.logback.classic.net.server.ServerSocketAppender">
+		<port>11112</port>
+		<includeCallerData>true</includeCallerData>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<level value="TRACE" />
+	<logger name="za.co.easypay.vagas.config.cayenne.ManagerConnection"
+		level="TRACE" />
+	<logger name="org.apache.cayenne.remote.hessian.HessianConnection"
+		level="TRACE" />
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="MainLog" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="SERVER" />
+	</root>
+</configuration>
